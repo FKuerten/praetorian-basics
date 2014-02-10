@@ -39,27 +39,14 @@
         #define FUNCTION_NAME "<unknown>"
     #endif
 
-        #define DO_WRAP(x) do { x } while(false)
+    #define DO_WRAP(x) do { x } while(false)
 
     /**
-         * Assert binary relation of two values with optional message
-         * @param a first value
-         * @param b second value
-         * @param m a mesasge
-         * @throws AssertionError
-         */
-        #define assertGTM(a,b,m) DO_WRAP( if(!(a> b)) { throw Assert::assertGT_(a,b,#a,#b,__FILE__,__LINE__,FUNCTION_NAME, m); })
-        #define assertGEM(a,b,m) DO_WRAP( if(!(a>=b)) { throw Assert::assertGE_(a,b,#a,#b,__FILE__,__LINE__,FUNCTION_NAME, m); })
-        #define assertLTM(a,b,m) DO_WRAP( if(!(a< b)) { throw Assert::assertLT_(a,b,#a,#b,__FILE__,__LINE__,FUNCTION_NAME, m); })
-        #define assertLEM(a,b,m) DO_WRAP( if(!(a<=b)) { throw Assert::assertLE_(a,b,#a,#b,__FILE__,__LINE__,FUNCTION_NAME, m); })
-        #define assertEQM(a,b,m) DO_WRAP( if(!(a==b)) { throw Assert::assertEQ_(a,b,#a,#b,__FILE__,__LINE__,FUNCTION_NAME, m); })
-
-        /**
-        * A namespace for the functions so they don't clutter global
-        * namespace.
-        * (macros ignore namespaces, to indicate that they are defined
-        * outside the namespace)
-        */
+    * A namespace for the functions so they don't clutter global
+    * namespace.
+    * (macros ignore namespaces, to indicate that they are defined
+    * outside the namespace)
+    */
     namespace Assert {
 
         /**
@@ -105,7 +92,7 @@
                                 ,std::string const & file
                                 ,unsigned int const line
                                 ,std::string const & function
-                                    ,std::string const & msg = std::string()
+                                ,std::string const & msg = std::string()
                                 );
         template<typename T>
         AssertionError assertLE_(T const & a
@@ -115,7 +102,7 @@
                                 ,std::string const & file
                                 ,unsigned int const line
                                 ,std::string const & function
-                                    ,std::string const & msg = std::string()
+                                ,std::string const & msg = std::string()
                                 );
         template<typename T>
         AssertionError assertEQ_(T const & a
@@ -125,17 +112,17 @@
                                 ,std::string const & file
                                 ,unsigned int const line
                                 ,std::string const & function
-                                    ,std::string const & msg = std::string()
+                                ,std::string const & msg = std::string()
                                 );
         AssertionError assertDEE_(double const a
-                                    ,double const b
-                                    ,double const delta
-                                    ,std::string const & sa
-                                    ,std::string const & sb
-                                    ,std::string const & file
-                                    ,unsigned int const line
-                                    ,std::string const & function
-                                    );
+                                 ,double const b
+                                 ,double const delta
+                                 ,std::string const & sa
+                                 ,std::string const & sb
+                                 ,std::string const & file
+                                 ,unsigned int const line
+                                 ,std::string const & function
+                                 );
 
         /**
          * Conmversion helper functions
@@ -180,6 +167,19 @@
         #define assertLT(a,b) do { if(!(a< b)) { throw Assert::assertLT_(a,b,#a,#b,__FILE__,__LINE__,FUNCTION_NAME); } } while(false)
         #define assertLE(a,b) do { if(!(a<=b)) { throw Assert::assertLE_(a,b,#a,#b,__FILE__,__LINE__,FUNCTION_NAME); } } while(false)
         #define assertEQ(a,b) do { if(!(a==b)) { throw Assert::assertEQ_(a,b,#a,#b,__FILE__,__LINE__,FUNCTION_NAME); } } while(false)
+
+        /**
+         * Assert binary relation of two values with optional message
+         * @param a first value
+         * @param b second value
+         * @param m a mesasge
+         * @throws AssertionError
+         */
+        #define assertGTM(a,b,m) DO_WRAP( if(!(a> b)) { throw Assert::assertGT_(a,b,#a,#b,__FILE__,__LINE__,FUNCTION_NAME, m); })
+        #define assertGEM(a,b,m) DO_WRAP( if(!(a>=b)) { throw Assert::assertGE_(a,b,#a,#b,__FILE__,__LINE__,FUNCTION_NAME, m); })
+        #define assertLTM(a,b,m) DO_WRAP( if(!(a< b)) { throw Assert::assertLT_(a,b,#a,#b,__FILE__,__LINE__,FUNCTION_NAME, m); })
+        #define assertLEM(a,b,m) DO_WRAP( if(!(a<=b)) { throw Assert::assertLE_(a,b,#a,#b,__FILE__,__LINE__,FUNCTION_NAME, m); })
+        #define assertEQM(a,b,m) DO_WRAP( if(!(a==b)) { throw Assert::assertEQ_(a,b,#a,#b,__FILE__,__LINE__,FUNCTION_NAME, m); })
     #else
         #define assertX
         #define assertDEE
@@ -188,5 +188,10 @@
         #define assertLT
         #define assertLE
         #define assertEQ
+        #define assertGTM
+        #define assertGEM
+        #define assertLTM
+        #define assertLEM
+        #define assertEQM
     #endif
 #endif

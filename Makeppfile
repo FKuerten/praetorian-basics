@@ -1,5 +1,3 @@
-#!/usr/bin/env bash
-
 #
 #   Copyright 2014 Fabian "Praetorian" Kürten
 #
@@ -19,25 +17,18 @@
 #   <http://www.gnu.org/licenses/>.
 #
 
-# Configuration section
-MODULE_NAME=basics
-DEPENDENCIES=
-LIBS:=-ldl
+MODULEDIR=.
+include config.mk
 
 $(phony default): library
 
-include scripts/objectsMakeppfile.mk
 PROJECT_NAME:=${MODULE_NAME}
+include scripts/objectsMakeppfile.mk
 include scripts/version.mk
 
 $(phony FORCE):
     @true
 
-global CXXFLAGS+= --std=c++11
-global CPPFLAGS:=${CPPFLAGS} -I${CURDIR}/target/generated
-ARFLAGS:=crvs
-
-CPPFLAGS+=-I${CURDIR}/../${DEPENDENCIES}/src/main/c++/
 LIBS+=$(addprefix -l,${DEPENDENCIES})
 LDFLAGS+=-L${CURDIR}/../${DEPENDENCIES}/target/
 OWN_LIB_FILES=$(shell ./scripts/expandModules.sh ${DEPENDENCIES})

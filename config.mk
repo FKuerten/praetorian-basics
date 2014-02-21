@@ -26,5 +26,7 @@ ARFLAGS:=crvs
 
 # Automatic section
 INCLUDEDIRS:=${MODULEDIR}/target/generated
-INCLUDEDIRS+=${MODULEDIR}/../${DEPENDENCIES}/src/main/c++
+iftrue ${DEPENDENCIES}
+	INCLUDEDIRS+=${MODULEDIR}/../${DEPENDENCIES}/src/main/c++
+endif
 CPPFLAGS+=-I${INCLUDEDIRS}

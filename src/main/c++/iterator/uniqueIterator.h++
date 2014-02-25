@@ -38,15 +38,15 @@
                         typedef typename Iterator::value_type value_type;
 
                     private: // variables
-                        Iterator current;
-                        Iterator const end;
+                        typename Iterator::Ptr current;
+                        typename Iterator::ConstPtr end;
                         std::set<value_type> returnedElements;
 
                     private: // method
                         void findNext();
 
                     public:
-                        UniqueIterator(Iterator current, Iterator end);
+                        UniqueIterator(typename Iterator::Ptr current, typename Iterator::ConstPtr end);
 
                         UniqueIterator<Iterator> & operator++();
                         UniqueIterator<Iterator> const operator++(int);

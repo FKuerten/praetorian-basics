@@ -35,9 +35,9 @@ namespace Praetorian {
             void
             UniqueIterator<Iterator>::findNext()
             {
-                //std::clog << "in findNext()" << std::endl;
-                while(this->current != this->end) {
-                    value_type value = *(this->current);
+                //std::clog << "entering UniqueIterator::findNext()" << std::endl;
+                while(*(this->current) != *(this->end)) {
+                    value_type value = **(this->current);
                     // try insert
                     auto success = this->returnedElements.insert(value);
                     if (success.second) {
@@ -47,15 +47,15 @@ namespace Praetorian {
                     } else {
                         // existing item
                         //std::clog << "existing item, skipping" << std::endl;
-                        ++this->current;
+                        ++(*(this->current));
                         continue;
                     }
                 }
-                //std::clog << "at end!" << std::endl;
+                //std::clog << "exiting UniqueIterator::findNext()" << std::endl;
             }
 
             template<class Iterator>
-            UniqueIterator<Iterator>::UniqueIterator(Iterator start, Iterator const end)
+            UniqueIterator<Iterator>::UniqueIterator(typename Iterator::Ptr start, typename Iterator::ConstPtr end)
             : current(start)
             , end(end)
             {
@@ -66,10 +66,15 @@ namespace Praetorian {
             UniqueIterator<Iterator> &
             UniqueIterator<Iterator>::operator++()
             {
-                //std::clog << "pre increment" << std::endl;
-                // we can preincrement, the current value will always be contianed in the set
-                ++(this->current);
+                //std::clog << "entering UniqueIterator::operator preincrement" << std::endl;
+                // we can preincrement, the current value will always be contained in the set
+                if (*(this->current) != *(this->end)) {
+                    //std::clog << "before preincrementing" << std::endl;
+                    ++(*(this->current));
+                    //std::clog << "after preincrementing" << std::endl;
+                }
                 this->findNext();
+                //std::clog << "exiting UniqueIterator::operator preincrement" << std::endl;
                 return *this;
             }
 
@@ -87,16 +92,18 @@ namespace Praetorian {
             typename UniqueIterator<Iterator>::value_type
             UniqueIterator<Iterator>::operator*() const
             {
-                return *(this->current);
+                return **(this->current);
             }
 
 
             template<class Iterator>
             bool operator==(UniqueIterator<Iterator> const & lhs, UniqueIterator<Iterator> const & rhs)
             {
+                //std::clog << "entering UniqueIterator::operator ==" << std::endl;
                 // at end?
-                bool const lhsAtEnd = lhs.current == lhs.end;
-                bool const rhsAtEnd = rhs.current == rhs.end;
+                bool const lhsAtEnd = (*lhs.current == *lhs.end);
+                bool const rhsAtEnd = (*rhs.current == *rhs.end);
+                //std::clog << "lhsAtEnd=" << lhsAtEnd << " rhsAtEnd=" << rhsAtEnd << std::endl;
                 if (lhsAtEnd && rhsAtEnd) {
                     return true;
                 } else if (lhsAtEnd || rhsAtEnd) {

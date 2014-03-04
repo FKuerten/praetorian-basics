@@ -31,9 +31,9 @@ namespace Praetorian {
     namespace Basics {
         namespace Iterator {
 
-            template<class Iterator>
+            template<class Iterator, class Comparator>
             void
-            UniqueIterator<Iterator>::findNext()
+            UniqueIterator<Iterator, Comparator>::findNext()
             {
                 //std::clog << "entering UniqueIterator::findNext()" << std::endl;
                 while(*(this->current) != *(this->end)) {
@@ -54,17 +54,17 @@ namespace Praetorian {
                 //std::clog << "exiting UniqueIterator::findNext()" << std::endl;
             }
 
-            template<class Iterator>
-            UniqueIterator<Iterator>::UniqueIterator(typename Iterator::Ptr start, typename Iterator::ConstPtr end)
+            template<class Iterator, class Comparator>
+            UniqueIterator<Iterator, Comparator>::UniqueIterator(typename Iterator::Ptr start, typename Iterator::ConstPtr end)
             : current(start)
             , end(end)
             {
                 this->findNext();
             }
 
-            template<class Iterator>
-            UniqueIterator<Iterator> &
-            UniqueIterator<Iterator>::operator++()
+            template<class Iterator, class Comparator>
+            UniqueIterator<Iterator, Comparator> &
+            UniqueIterator<Iterator, Comparator>::operator++()
             {
                 //std::clog << "entering UniqueIterator::operator preincrement" << std::endl;
                 // we can preincrement, the current value will always be contained in the set
@@ -78,26 +78,26 @@ namespace Praetorian {
                 return *this;
             }
 
-            template<class Iterator>
-            UniqueIterator<Iterator> const
-            UniqueIterator<Iterator>::operator++(int)
+            template<class Iterator, class Comparator>
+            UniqueIterator<Iterator, Comparator> const
+            UniqueIterator<Iterator, Comparator>::operator++(int)
             {
                 //std::clog << "post increment" << std::endl;
-                UniqueIterator<Iterator> copy(*this);
+                UniqueIterator<Iterator, Comparator> copy(*this);
                 ++(*this);
                 return copy;
             }
 
-            template<class Iterator>
-            typename UniqueIterator<Iterator>::value_type
-            UniqueIterator<Iterator>::operator*() const
+            template<class Iterator, class Comparator>
+            typename UniqueIterator<Iterator, Comparator>::value_type
+            UniqueIterator<Iterator, Comparator>::operator*() const
             {
                 return **(this->current);
             }
 
 
-            template<class Iterator>
-            bool operator==(UniqueIterator<Iterator> const & lhs, UniqueIterator<Iterator> const & rhs)
+            template<class Iterator, class Comparator>
+            bool operator==(UniqueIterator<Iterator, Comparator> const & lhs, UniqueIterator<Iterator, Comparator> const & rhs)
             {
                 //std::clog << "entering UniqueIterator::operator ==" << std::endl;
                 // at end?
@@ -114,8 +114,8 @@ namespace Praetorian {
                     && (lhs.returnedElements == rhs.returnedElements);
             }
 
-            template<class Iterator>
-            bool operator!=(UniqueIterator<Iterator> const & lhs, UniqueIterator<Iterator> const & rhs)
+            template<class Iterator, class Comparator>
+            bool operator!=(UniqueIterator<Iterator, Comparator> const & lhs, UniqueIterator<Iterator, Comparator> const & rhs)
             {
                 return !(lhs == rhs);
             }

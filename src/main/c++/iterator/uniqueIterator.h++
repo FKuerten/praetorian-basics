@@ -24,15 +24,15 @@
         namespace Basics {
             namespace Iterator {
 
-                template<class Iterator>
+                template<class Iterator, class Comparator>
                 class UniqueIterator;
 
-                template<class Iterator>
-                bool operator==(UniqueIterator<Iterator> const & lhs, UniqueIterator<Iterator> const & rhs);
-                template<class Iterator>
-                bool operator!=(UniqueIterator<Iterator> const & lhs, UniqueIterator<Iterator> const & rhs);
+                template<class Iterator, class Comparator>
+                bool operator==(UniqueIterator<Iterator, Comparator> const & lhs, UniqueIterator<Iterator, Comparator> const & rhs);
+                template<class Iterator, class Comparator>
+                bool operator!=(UniqueIterator<Iterator, Comparator> const & lhs, UniqueIterator<Iterator, Comparator> const & rhs);
 
-                template<class Iterator>
+                template<class Iterator, class Comparator>
                 class UniqueIterator {
                     public:
                         typedef typename Iterator::value_type value_type;
@@ -40,7 +40,7 @@
                     private: // variables
                         typename Iterator::Ptr current;
                         typename Iterator::ConstPtr end;
-                        std::set<value_type> returnedElements;
+                        std::set<value_type, Comparator> returnedElements;
 
                     private: // method
                         void findNext();
@@ -48,12 +48,12 @@
                     public:
                         UniqueIterator(typename Iterator::Ptr current, typename Iterator::ConstPtr end);
 
-                        UniqueIterator<Iterator> & operator++();
-                        UniqueIterator<Iterator> const operator++(int);
+                        UniqueIterator<Iterator, Comparator> & operator++();
+                        UniqueIterator<Iterator, Comparator> const operator++(int);
                         value_type operator*() const;
 
-                    friend bool operator==<>(UniqueIterator<Iterator> const & lhs, UniqueIterator<Iterator> const & rhs);
-                    friend bool operator!=<>(UniqueIterator<Iterator> const & lhs, UniqueIterator<Iterator> const & rhs);
+                    friend bool operator==<>(UniqueIterator<Iterator, Comparator> const & lhs, UniqueIterator<Iterator, Comparator> const & rhs);
+                    friend bool operator!=<>(UniqueIterator<Iterator, Comparator> const & lhs, UniqueIterator<Iterator, Comparator> const & rhs);
                 };
 
             }

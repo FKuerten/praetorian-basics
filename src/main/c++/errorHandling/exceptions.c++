@@ -73,13 +73,13 @@ void Exception::printStacktrace(std::ostream & os) const throw() {
         if(_traced <= 0) {
             os << "Error: No stacktrace available" << std::endl;
         } else {
-            os << "Stacktrace available, most recent call on top: " << (_traced-skipFirstSymbols) << " items" << std::endl;
+            os << "Stacktrace available, most recent call on top: " << (_traced - static_cast<int>(skipFirstSymbols)) << " items" << std::endl;
             os << std::setw(wIndex) << std::left << "#" << " ";
             os << std::setw(wSharedObject) << "shared object" << " ";
             os << std::setw(wFunction) << "function" << " ";
             os << "file:line";
             os << std::internal << std::endl;
-            for(unsigned int i = skipFirstSymbols; i < (unsigned int)_traced; i++) {
+            for(unsigned int i = skipFirstSymbols; i < static_cast<unsigned int>(_traced); i++) {
                 os << std::setw(wIndex) << (i-skipFirstSymbols) << " ";
                 Dl_info dlinfo;
                 if(!dladdr(_stacktrace[i], &dlinfo)) {
@@ -91,7 +91,7 @@ void Exception::printStacktrace(std::ostream & os) const throw() {
                     //void * const symAddress = dlinfo.dli_saddr;
                     char* demangled;
                     int status;
-                    demangled = abi::__cxa_demangle(symName, NULL, 0, &status);
+                    demangled = abi::__cxa_demangle(symName, nullptr, nullptr, &status);
                     if(status == 0 && demangled) {
                         symName = demangled;
                     }
@@ -106,7 +106,7 @@ void Exception::printStacktrace(std::ostream & os) const throw() {
                         std::vector<std::string> addr2lineArgs;
                         addr2lineArgs.push_back("addr2line");
                         std::stringstream ssPtr;
-                        ssPtr << (void *)(_stacktrace[i]);
+                        ssPtr << static_cast<void *>(_stacktrace[i]);
                         addr2lineArgs.push_back(ssPtr.str());
                         addr2lineArgs.push_back("-e");
                         addr2lineArgs.push_back(sharedObjectName);

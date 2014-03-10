@@ -49,7 +49,7 @@ namespace Assert {
     template<> inline
     std::string xtos(unsigned char const & c) {
         std::stringstream ss;
-        ss << (unsigned int)c;
+        ss << static_cast<unsigned int>(c);
         return ss.str();
     }
 

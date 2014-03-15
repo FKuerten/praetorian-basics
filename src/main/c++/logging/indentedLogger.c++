@@ -16,6 +16,12 @@ namespace Praetorian {
 
             IndentedLogger::~IndentedLogger() {}
 
+            bool
+            IndentedLogger::isEnabled() const
+            {
+                return this->delegate->isEnabled();
+            }
+
 
             Logger::Ptr
             IndentedLogger::write(std::string const & message)

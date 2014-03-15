@@ -10,6 +10,12 @@ namespace Praetorian {
 
             NullLogger::~NullLogger() {}
 
+            bool
+            NullLogger::isEnabled() const
+            {
+                return false;
+            }
+
 
             Logger::Ptr
             NullLogger::write(std::string const & message)

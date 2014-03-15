@@ -13,6 +13,12 @@ namespace Praetorian {
 
             StreamLogger::~StreamLogger() {}
 
+            bool
+            StreamLogger::isEnabled() const
+            {
+                return true;
+            }
+
 
             Logger::Ptr
             StreamLogger::write(std::string const & message)

@@ -16,6 +16,7 @@
                     public: //methods
                         ~Logger();
 
+                        virtual bool isEnabled() const = 0;
                         //Logger::Ptr write(char const * message);
                         //Logger::Ptr writeln(char const * message);
 

@@ -19,6 +19,8 @@
                         StreamLogger(std::ostream & delegate);
                         ~StreamLogger();
 
+                        virtual bool isEnabled() const;
+
                         virtual Logger::Ptr write(std::string const & message);
                         virtual Logger::Ptr writeln();
                 };

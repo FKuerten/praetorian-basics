@@ -12,6 +12,14 @@
                     public: //types
                         typedef std::shared_ptr<Logger> Ptr;
 
+
+                    private:
+                        // This should prevent ALL implicit conversions.
+                        template <typename T>
+                        Logger::Ptr write(T message);
+                        template <typename T>
+                        Logger::Ptr writeln(T message);
+
                     public: //methods
                         Logger();
                         ~Logger();
@@ -24,6 +32,7 @@
                         Logger::Ptr write(double message);
                         Logger::Ptr writeln(double message);
 
+                        // bools are inherently dangerous
                         Logger::Ptr write(bool message);
                         Logger::Ptr writeln(bool message);
 

@@ -12,13 +12,23 @@
                     public: //types
                         typedef std::shared_ptr<Logger> Ptr;
 
-
                     public: //methods
+                        Logger();
                         ~Logger();
 
                         virtual bool isEnabled() const = 0;
-                        //Logger::Ptr write(char const * message);
-                        //Logger::Ptr writeln(char const * message);
+
+                        Logger::Ptr write(char const * message);
+                        Logger::Ptr writeln(char const * message);
+
+                        Logger::Ptr write(double message);
+                        Logger::Ptr writeln(double message);
+
+                        Logger::Ptr write(bool message);
+                        Logger::Ptr writeln(bool message);
+
+                        Logger::Ptr write(long unsigned int message);
+                        Logger::Ptr writeln(long unsigned int message);
 
                         Logger::Ptr write(unsigned int message);
                         Logger::Ptr writeln(unsigned int message);

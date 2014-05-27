@@ -37,6 +37,19 @@ namespace Praetorian {
             }
 
             Logger::Ptr
+            Logger::write(long double message) {
+                this->write(boost::lexical_cast<std::string>(message));
+                return shared_from_this();
+            }
+
+            Logger::Ptr
+            Logger::writeln(long double message) {
+                this->writeln(boost::lexical_cast<std::string>(message));
+                return shared_from_this();
+            }
+
+
+            Logger::Ptr
             Logger::write(bool message) {
                 this->write(boost::lexical_cast<std::string>(message));
                 return shared_from_this();

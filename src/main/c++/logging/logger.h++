@@ -32,6 +32,9 @@
                         Logger::Ptr write(double message);
                         Logger::Ptr writeln(double message);
 
+                        Logger::Ptr write(long double message);
+                        Logger::Ptr writeln(long double message);
+
                         // bools are inherently dangerous
                         Logger::Ptr write(bool message);
                         Logger::Ptr writeln(bool message);

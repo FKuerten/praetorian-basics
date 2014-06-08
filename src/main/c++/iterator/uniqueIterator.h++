@@ -20,6 +20,8 @@
 #ifndef PRAETORIAN_BASICS_ITERATOR_UNIQUEITERATOR_HPP
     #define PRAETORIAN_BASICS_ITERATOR_UNIQUEITERATOR_HPP
 
+    #include <iterator>
+
     namespace Praetorian {
         namespace Basics {
             namespace Iterator {
@@ -33,7 +35,7 @@
                 bool operator!=(UniqueIterator<Iterator, Comparator> const & lhs, UniqueIterator<Iterator, Comparator> const & rhs);
 
                 template<class Iterator, class Comparator>
-                class UniqueIterator {
+                class UniqueIterator : public std::iterator<std::input_iterator_tag, typename Iterator::value_type> {
                     public:
                         typedef typename Iterator::value_type value_type;
 

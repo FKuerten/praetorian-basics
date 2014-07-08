@@ -38,13 +38,13 @@
     #define CREATE_VISITOR_INTERFACE(ClassName) \
     class Visitor { \
         public: \
-            virtual void visit(ClassName &) = 0; \
+            virtual void visit(ClassName const &) = 0; \
             virtual ~Visitor() {}; \
     }
 
     #define CREATE_VISITOR_METHOD(ClassName) \
     void \
-    ClassName::accept(::Praetorian::Basics::Visitor::AcyclicVisitor & visitor) \
+    ClassName::accept(::Praetorian::Basics::Visitor::AcyclicVisitor & visitor) const \
     { \
         if (ClassName::Visitor* correctVisitor = dynamic_cast<ClassName::Visitor*>(&visitor)) { \
             correctVisitor->visit(*this); \

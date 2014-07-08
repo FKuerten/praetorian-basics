@@ -39,19 +39,25 @@
         #define FUNCTION_NAME "<unknown>"
     #endif
 
-    #define DO_WRAP(x) do { x } while(false)
+    #ifndef NDEBUG
+        #define ASSERTIONS_ENABLED true
+    #else
+        #define ASSERTIONS_ENABLED false
+    #endif
+
+    #define DO_WRAP(x) do { if(ASSERTIONS_ENABLED){ x } } while(false)
 
     /**
-    * A namespace for the functions so they don't clutter global
-    * namespace.
-    * (macros ignore namespaces, to indicate that they are defined
-    * outside the namespace)
-    */
+     * A namespace for the functions so they don't clutter global
+     * namespace.
+     * (macros ignore namespaces, to indicate that they are defined
+     * outside the namespace)
+     */
     namespace Assert {
 
         /**
-            * A logic error thrown if an assertion fails.
-            */
+         * A logic error thrown if an assertion fails.
+         */
         class AssertionError : public LogicError {
             public:
                 AssertionError(std::string const & message
@@ -62,8 +68,8 @@
         };
 
         /**
-            * Assertion helper functions.
-            */
+         * Assertion helper functions.
+         */
         template<typename T>
         AssertionError assertGT_(T const & a
                                 ,T const & b
@@ -139,59 +145,44 @@
         #include "assert.inline.h++"
     #endif
 
-    #ifndef NDEBUG
-        /**
-         * Asserts that a condition is true.
-         * @param b the condition
-         * @throws AssertionErrror if the condition is false
-         */
-        #define assertX(b) do { if(!(b)) { throw Assert::AssertionError(#b,__FILE__,__LINE__,FUNCTION_NAME); } } while(false)
+    /**
+     * Asserts that a condition is true.
+     * @param b the condition
+     * @throws AssertionErrror if the condition is false
+     */
+    #define assertX(b) DO_WRAP( if(!(b)) { throw Assert::AssertionError(#b,__FILE__,__LINE__,FUNCTION_NAME); } )
 
-        /**
-         * Assert that two doubles are close to each other.
-         * @param a first double
-         * @param b second double
-         * @param eps maximum allowed difference
-         * @throws AssertionError if the doubles are not that close.
-         */
-        #define assertDEE(a,b,eps) do { if(std::fabs(a-b) > eps) { throw Assert::assertDEE_(a,b,eps,#a,#b,__FILE__,__LINE__,FUNCTION_NAME); } } while(false)
+    /**
+     * Assert that two doubles are close to each other.
+     * @param a first double
+     * @param b second double
+     * @param eps maximum allowed difference
+     * @throws AssertionError if the doubles are not that close.
+     */
+    #define assertDEE(a,b,eps) DO_WRAP( if(std::fabs(a-b) > eps) { throw Assert::assertDEE_(a,b,eps,#a,#b,__FILE__,__LINE__,FUNCTION_NAME); } )
 
-        /**
-         * Assert binary relation of two values
-         * @param a first value
-         * @param b second value
-         * @throws AssertionError
-         */
-        #define assertGT(a,b) do { if(!(a> b)) { throw Assert::assertGT_(a,b,#a,#b,__FILE__,__LINE__,FUNCTION_NAME); } } while(false)
-        #define assertGE(a,b) do { if(!(a>=b)) { throw Assert::assertGE_(a,b,#a,#b,__FILE__,__LINE__,FUNCTION_NAME); } } while(false)
-        #define assertLT(a,b) do { if(!(a< b)) { throw Assert::assertLT_(a,b,#a,#b,__FILE__,__LINE__,FUNCTION_NAME); } } while(false)
-        #define assertLE(a,b) do { if(!(a<=b)) { throw Assert::assertLE_(a,b,#a,#b,__FILE__,__LINE__,FUNCTION_NAME); } } while(false)
-        #define assertEQ(a,b) do { if(!(a==b)) { throw Assert::assertEQ_(a,b,#a,#b,__FILE__,__LINE__,FUNCTION_NAME); } } while(false)
+    /**
+     * Assert binary relation of two values
+     * @param a first value
+     * @param b second value
+     * @throws AssertionError
+     */
+    #define assertGT(a,b) DO_WRAP( if(!(a> b)) { throw Assert::assertGT_(a,b,#a,#b,__FILE__,__LINE__,FUNCTION_NAME); } )
+    #define assertGE(a,b) DO_WRAP( if(!(a>=b)) { throw Assert::assertGE_(a,b,#a,#b,__FILE__,__LINE__,FUNCTION_NAME); } )
+    #define assertLT(a,b) DO_WRAP( if(!(a< b)) { throw Assert::assertLT_(a,b,#a,#b,__FILE__,__LINE__,FUNCTION_NAME); } )
+    #define assertLE(a,b) DO_WRAP( if(!(a<=b)) { throw Assert::assertLE_(a,b,#a,#b,__FILE__,__LINE__,FUNCTION_NAME); } )
+    #define assertEQ(a,b) DO_WRAP( if(!(a==b)) { throw Assert::assertEQ_(a,b,#a,#b,__FILE__,__LINE__,FUNCTION_NAME); } )
 
-        /**
-         * Assert binary relation of two values with optional message
-         * @param a first value
-         * @param b second value
-         * @param m a mesasge
-         * @throws AssertionError
-         */
-        #define assertGTM(a,b,m) DO_WRAP( if(!(a> b)) { throw Assert::assertGT_(a,b,#a,#b,__FILE__,__LINE__,FUNCTION_NAME, m); })
-        #define assertGEM(a,b,m) DO_WRAP( if(!(a>=b)) { throw Assert::assertGE_(a,b,#a,#b,__FILE__,__LINE__,FUNCTION_NAME, m); })
-        #define assertLTM(a,b,m) DO_WRAP( if(!(a< b)) { throw Assert::assertLT_(a,b,#a,#b,__FILE__,__LINE__,FUNCTION_NAME, m); })
-        #define assertLEM(a,b,m) DO_WRAP( if(!(a<=b)) { throw Assert::assertLE_(a,b,#a,#b,__FILE__,__LINE__,FUNCTION_NAME, m); })
-        #define assertEQM(a,b,m) DO_WRAP( if(!(a==b)) { throw Assert::assertEQ_(a,b,#a,#b,__FILE__,__LINE__,FUNCTION_NAME, m); })
-    #else
-        #define assertX
-        #define assertDEE
-        #define assertGT
-        #define assertGE
-        #define assertLT
-        #define assertLE
-        #define assertEQ
-        #define assertGTM
-        #define assertGEM
-        #define assertLTM
-        #define assertLEM
-        #define assertEQM
-    #endif
+    /**
+     * Assert binary relation of two values with optional message
+     * @param a first value
+     * @param b second value
+     * @param m a mesasge
+     * @throws AssertionError
+     */
+    #define assertGTM(a,b,m) DO_WRAP( if(!(a> b)) { throw Assert::assertGT_(a,b,#a,#b,__FILE__,__LINE__,FUNCTION_NAME, m); })
+    #define assertGEM(a,b,m) DO_WRAP( if(!(a>=b)) { throw Assert::assertGE_(a,b,#a,#b,__FILE__,__LINE__,FUNCTION_NAME, m); })
+    #define assertLTM(a,b,m) DO_WRAP( if(!(a< b)) { throw Assert::assertLT_(a,b,#a,#b,__FILE__,__LINE__,FUNCTION_NAME, m); })
+    #define assertLEM(a,b,m) DO_WRAP( if(!(a<=b)) { throw Assert::assertLE_(a,b,#a,#b,__FILE__,__LINE__,FUNCTION_NAME, m); })
+    #define assertEQM(a,b,m) DO_WRAP( if(!(a==b)) { throw Assert::assertEQ_(a,b,#a,#b,__FILE__,__LINE__,FUNCTION_NAME, m); })
 #endif
